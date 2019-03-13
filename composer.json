@@ -1,5 +1,5 @@
 {
-    "name": "alexanderbrowne/quick-route",
+    "name": "AlexLawford/QuickRoute",
     "require-dev": {
         "nette/tester": "^2.2"
     },
