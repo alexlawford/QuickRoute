@@ -1,9 +1,18 @@
 <?php
 
 use Tester\Assert;
-use AlexLawford\RouteMatcher;
+use AlexLawford\QuickRoute\QuickRoute;
+
 require '../vendor/autoload.php';
 
 Tester\Environment::setup();
 
-Assert::same(true, true);
+$router = new QuickRoute;
+
+$route = $router('GET', 'greet/alex', [
+    ['GET', 'greet/string:name', function($args) {
+        echo "Hello " . $args['name'];
+    }],
+]);
+
+Assert::same(($route->callback)($route->args), "Hello alex");
