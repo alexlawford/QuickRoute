@@ -70,11 +70,11 @@ class QuickRoute
       // so, for example user/string:name
       // matching user/alex
       // would return "name" => "alex"
-      if($match) {
+      if($match === 1) {
           return $this->applyKeys($namedMatches, $matches);
       }
 
-      return $matches;
+      return [];
   }
 
   // Use the values in one linear array
