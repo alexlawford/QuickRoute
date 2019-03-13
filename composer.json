@@ -1,0 +1,8 @@
+{
+    "name": "alexanderbrowne/quick-route",
+    "require-dev": {
+        "nette/tester": "^2.2"
+    },
+    "license": "MIT",
+    "require": {}
+}
