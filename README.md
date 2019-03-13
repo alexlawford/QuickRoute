@@ -24,7 +24,7 @@
     );
 
     if($route !== null) {
-        $route->callback($route->args);
+        ($route->callback)($route->args);
     } else {
         // 404
     }
