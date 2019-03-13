@@ -4,7 +4,9 @@
         "nette/tester": "^2.2"
     },
     "license": "MIT",
-    "require": {},
+    "require": {
+        "php": "^7.1"
+    },
     "autoload": {
         "psr-4": {
             "AlexLawford\\QuickRoute\\": "src"
