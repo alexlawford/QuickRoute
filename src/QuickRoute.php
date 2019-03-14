@@ -4,6 +4,13 @@ namespace AlexLawford\QuickRoute;
 
 class QuickRoute
 {
+  /**
+   * Returns the first route (callable + arguments) that matches the method and pattern provided
+   * @param string $requestMethod (GET, POST, PUT etc)
+   * @param string $requestUri the uri from the server request
+   * @param array $routes an array of arrays in the format [ ['METHOD', 'pattern/to/match', $callback] ]
+   * @return Route object with two properties: callable $callback and array $args
+   */
   public function __invoke(string $requestMethod, string $requestUri, array $routes) : ?Route
   {
     if(count($routes) === 0){
@@ -22,12 +29,16 @@ class QuickRoute
     return $this->__invoke($requestMethod, $requestUri, array_slice($routes, 1));
   }
 
-  // Matches a pretty route (e.g users/string:name) to a uri string
-  // returning an array of the matches. Array will be empty [] if
-  // no matches are found
+  /**
+   * Match a route pattern with optional wildcards (e.g users/string:name)
+   * to a string, returning an array of the matches (including the whole string)
+   * Array will be empty if no matches are found.
+   * @param string $uri the string to match against
+   * @param string $pattern pattern, w/ optional wildcards (alpha, number, string)
+   * @return array array of matches
+   */
   private function match(string $uri, string $pattern) : array
   {
-      // Convert pretty routes to regex
       $namedMatches = ['uri_string'];
 
       // wildcards
@@ -39,7 +50,6 @@ class QuickRoute
           foreach($array as $segment) {
               if(strpos($segment, ':') !== false) {
                   $match = explode(':', $segment);
-                  // replace section with correct regex
                   switch($match[0]) {
                       case 'alpha':
                           $output[] = '([a-zA-Z]+)';
@@ -51,9 +61,8 @@ class QuickRoute
                           $output[] = '([a-zA-Z0-9-_]+)';
                           break;
                       default:
-                          return [];
+                          return []; // illegal wildcard
                   }
-                  // Save named matches for output later
                   $namedMatches[] = $match[1];
               } else {
                   $output[] = $segment;
@@ -61,15 +70,12 @@ class QuickRoute
           }
           $regex = $this->bookend(implode('/', $output));
       } else {
+          // no wildcards
           $regex = $this->bookend($pattern);
       }
 
       $match = preg_match($regex, $uri, $matches);
 
-      // apply our named keys to the matches
-      // so, for example user/string:name
-      // matching user/alex
-      // would return "name" => "alex"
       if($match === 1) {
           return $this->applyKeys($namedMatches, $matches);
       }
@@ -77,8 +83,12 @@ class QuickRoute
       return [];
   }
 
-  // Use the values in one linear array
-  // as keys on a target array
+  /**
+   * Use the values in one linear array as keys on a target array
+   * @param array $keys
+   * @param array $target
+   * @return array
+   */
   private function applyKeys(array $keys, array $target) : array
   {
       if($this->isAssociative($keys) || $this->isAssociative($target)) {
@@ -91,13 +101,21 @@ class QuickRoute
       return $result;
   }
 
-  // Check if an array is associative
+  /**
+   * Check if an array is associative
+   * @param array $array
+   * @return bool
+   */
   private function isAssociative(array $array) : bool
   {
       return array_values($array) !== $array;
   }
 
-  // For regex, put necessary bits before and after
+  /**
+   * For match regex, put necessary bits before and after
+   * @param string $pattern
+   * @return string the decorated string
+   */
   private function bookEnd(string $pattern) : string
   {
       // add trailing slash if not already there
