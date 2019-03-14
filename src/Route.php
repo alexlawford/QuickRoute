@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexLawford\QuickRoute;
+namespace AlexLawford;
 
 class Route
 {
