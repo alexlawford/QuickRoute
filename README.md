@@ -1,4 +1,18 @@
 
+# Quick Route
+
+## Introduction
+Quick route provides a simple alternative to more advanced routers, suitable for small projects and prototyping. It is also purely functional and has no dependencies, so it's easy to slot into any project.
+
+Routes patterns look like this:
+
+    'users/alpha:name/number:age'
+
+## Install
+
+Via composer:
+
+    composer require alexlawford/quickroute
 
 ## Example Usage
 
