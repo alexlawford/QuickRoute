@@ -9,7 +9,7 @@ class QuickRoute
    * @param string $requestMethod (GET, POST, PUT etc)
    * @param string $requestUri the uri from the server request
    * @param array $routes an array of arrays in the format [ ['METHOD', 'pattern/to/match', $callback] ]
-   * @return Route object with two properties: callable $callback and array $args
+   * @return Route object with two properties: callable $callback and array $args (or null if none found)
    */
   public function __invoke(string $requestMethod, string $requestUri, array $routes) : ?Route
   {
